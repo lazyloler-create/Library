@@ -3,6 +3,7 @@
 #include <string>
 #include <cctype>
 #include <vector>
+#include <variant>
 #include "classes/book_class.hpp"
 
 void createCategories(std::vector<std::string>& categories){
@@ -44,12 +45,13 @@ void checkCategories(std::vector<std::string> categories){
     }
 }
 
+
+
 int main(){
     std::vector<std::string> categories;
 
    checkCategories(categories);
 
-   Book* book = new Book();
-   std::cout<<"Enter book title, author, edition and book ID: " << std::endl;
+   std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
    
 }
