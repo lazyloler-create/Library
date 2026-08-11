@@ -8,13 +8,25 @@ private:
     std::string edition;
 
 public:
-    std::string getTitle();
-    std::string getAuthor();
-    std::string getEdition();
+    std::string getTitle() const {
+        return title;
+    };
+    std::string getAuthor() const {
+        return author;
+    };
+    std::string getEdition() const {
+        return edition;
+    };
 
-    void setTitle(std::string title);
-    void setAuthor(std::string author);
-    void setEdition(std::string edition);
+    void setTitle(std::string& title){
+        this->title = title;
+    };
+    void setAuthor(std::string& author){
+        this->author = author;
+    };
+    void setEdition(std::string& edition){
+        this->edition = edition;
+    };
 };
 
 #endif

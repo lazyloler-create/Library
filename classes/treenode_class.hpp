@@ -6,7 +6,7 @@
 #include <memory>
 #include <variant>
 
-using NodeData = std::variant<string, std::map<Book book, int bookID>>;
+using NodeData = std::variant<std::string, std::map<Book, int>>;
 
 class TreeNode{
     private:    
@@ -15,12 +15,12 @@ class TreeNode{
         std::unique_ptr<TreeNode> right{nullptr};
         
     public:
-    TreeNode(NodeData val, int id);
+    TreeNode(NodeData val);
     ~TreeNode();
 
     bool isString();
     bool isMap();
-    static std::unique_ptr<TreeNode> createNode(NodeData node, std::string cat);
+    std::unique_ptr<TreeNode> createNode(NodeData node);
 };
 
 #endif

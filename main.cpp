@@ -8,17 +8,17 @@
 
 void createCategories(std::vector<std::string>& categories){
     std::cout<<"How many categories do you want to create:" <<std::endl;
-    int cout = 0;
-    cin>>cout;
-    if(cout == 0){
+    int count = 0;
+    std::cin>>count;
+    if(count == 0){
         std::cout<<"Can't create 0 categories!" << std::endl;
         return;
     }
     std::cout<<"Enter categorie/s: " << std::endl;
-    for(int i = 0; i < cout; i++){
+    for(int i = 0; i < count; i++){
         std::string categorie;
-        cout<<"Categorie " << i + 1 << std::endl;
-        cin>>categorie;
+        std::cout<<"Categorie " << i + 1 << std::endl;
+        std::cin>>categorie;
         categories.push_back(categorie);
     }
 }
@@ -28,7 +28,7 @@ void checkCategories(std::vector<std::string> categories){
  if(categories.empty()){
         std::cout<<"You have no categories, create some? \n (y/n)" << std::endl;
         char ch;
-        cin>>ch;
+        std::cin>>ch;
         switch(tolower(ch)){
             case 'y':
             createCategories(categories);
