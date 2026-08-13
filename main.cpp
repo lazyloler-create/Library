@@ -15,11 +15,17 @@ void createCategories(std::vector<std::string>& categories){
         std::cout<<"Can't create 0 categories!" << std::endl;
         return;
     }
+
     std::cout<<"Enter categorie/s: " << std::endl;
     for(int i = 0; i < count; i++){
         std::string categorie;
         std::cout<<"Categorie " << i + 1 << std::endl;
-        std::cin>>categorie;
+       
+        if(i == 0) {
+            std::cin.ignore(1000, '\n');  
+        }
+
+        std::getline(std::cin, categorie);
         categories.push_back(categorie);
     }
 }
@@ -66,7 +72,6 @@ void insertRec(TreeNode* node, NodeData value){
     if(node->right) insertRec(node->right.get(), value); 
 }
 
-
 int main(){
     std::vector<std::string> categories;
     checkCategories(categories);
@@ -77,7 +82,7 @@ int main(){
     std::vector<std::unique_ptr<TreeNode>> forest;
     
     for(int i = 0; i < categories.size(); i++){
-        NodeData categoryNode(std::string(categories[i]));
+        NodeData categoryNode(categories[i]);
 
         // Create category node with unique_ptr ownership
         std::unique_ptr<TreeNode> categoryNodePtr = TreeNode::createNode(categoryNode);

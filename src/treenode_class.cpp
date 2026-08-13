@@ -2,8 +2,10 @@
 #include <map>
 #include <variant>
 #include <stdexcept>
-#include "classes/book_class.hpp"
-#include "classes/treenode_class.hpp"
+#include <memory>
+#include <string>
+#include "../classes/book_class.hpp"
+#include "../classes/treenode_class.hpp"
 
 TreeNode::TreeNode(NodeData data) : book(std::move(data)), left(nullptr), right(nullptr) {}
 

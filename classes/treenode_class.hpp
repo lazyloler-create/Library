@@ -2,11 +2,16 @@
 #define TREENODE_CLASS_HPP
 
 #include <iostream>
-#include "classes/book_class.hpp"
+#include <string>
+#include <map>
 #include <memory>
 #include <variant>
+#include "./book_class.hpp"
 
-using NodeData = std::variant<std::string, std::map<Book, int>>;
+using NodeData = std::variant<
+    std::string, 
+    std::map<Book, int, std::less<Book>, std::allocator<std::pair<const Book, int>>>
+>;
 
 class TreeNode{
     private:    
