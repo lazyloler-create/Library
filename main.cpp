@@ -61,11 +61,13 @@ void insertRec(TreeNode* node, NodeData value){
     if(!node->left) {
         std::unique_ptr<TreeNode> newNode = TreeNode::createNode(value);
         node->left = std::move(newNode); 
+        return; 
     }
 
     else if(!node->right) {  
         std::unique_ptr<TreeNode> newNode = TreeNode::createNode(value);
         node->right = std::move(newNode);
+        return;
     }
 
     if(node->left) insertRec(node->left.get(), value);  
