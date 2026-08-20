@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <string>
 #include <cctype>
@@ -6,6 +7,24 @@
 #include <variant>
 #include "classes/book_class.hpp"
 #include "classes/treenode_class.hpp"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+ 
+
+bool isFileEmpty(std::fstream& file) {
+    return file.peek() == std::ifstream::traits_type::eof();
+}
+
+void cacheBookAttribute(json& j, Book b){
+    j["Title"] = b.getTitle();
+    j["Author"] = b.getAuthor();
+    j["Edition"] = b.getEdition();
+}
+
+void cacheCategories(std::string cat, std::ofstream& jsonF){
+    json jsonArr = nlohmann::json::array();
+}
 
 void createCategories(std::vector<std::string>& categories){
     std::cout<<"How many categories do you want to create:" <<std::endl;
@@ -77,7 +96,7 @@ void insertRec(TreeNode* node, NodeData value){
 int main(){
     std::vector<std::string> categories;
     checkCategories(categories);
-
+    std::ofstream jsonFile("categoriesCache.json");
     // Input books for each category
    std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
 
@@ -134,5 +153,6 @@ int main(){
         std::cout<<"Category "<<i+1<<": "<<categories[i]<<std::endl;
     }
 
+    jsonFile.close();
     return 0;
 }
