@@ -5,73 +5,18 @@
 #include <cctype>
 #include <vector>
 #include <variant>
+#include <nlohmann/json.hpp>
 #include "classes/book_class.hpp"
 #include "classes/treenode_class.hpp"
-#include <nlohmann/json.hpp>
+#include "function_headers/categories_functions.hpp"
 
 using json = nlohmann::json;
- 
 
 bool isFileEmpty(std::fstream& file) {
     return file.peek() == std::ifstream::traits_type::eof();
 }
 
-void cacheBookAttribute(json& j, Book b){
-    j["Title"] = b.getTitle();
-    j["Author"] = b.getAuthor();
-    j["Edition"] = b.getEdition();
-}
-
-void cacheCategories(std::string cat, std::ofstream& jsonF){
-    json jsonArr = nlohmann::json::array();
-}
-
-void createCategories(std::vector<std::string>& categories){
-    std::cout<<"How many categories do you want to create:" <<std::endl;
-    int count = 0;
-    std::cin>>count;
-    if(count == 0){
-        std::cout<<"Can't create 0 categories!" << std::endl;
-        return;
-    }
-
-    std::cout<<"Enter categorie/s: " << std::endl;
-    for(int i = 0; i < count; i++){
-        std::string categorie;
-        std::cout<<"Categorie " << i + 1 << std::endl;
-       
-        if(i == 0) {
-            std::cin.ignore(1000, '\n');  
-        }
-
-        std::getline(std::cin, categorie);
-        categories.push_back(categorie);
-    }
-}
-
-//checks if categories vector is empty and prompts the user to create if empty
-void checkCategories(std::vector<std::string>& categories){
- if(categories.empty()){
-        std::cout<<"You have no categories, create some? \n (y/n)" << std::endl;
-        char ch;
-        std::cin>>ch;
-        switch(tolower(ch)){
-            case 'y':
-                createCategories(categories);
-                break;
-            case 'n':
-                std::cout<<"No categories, ending program!" <<std::endl;
-                exit(1);
-                break;
-            default:
-                std::cout<<"Invalid choice!" << std::endl;
-                exit(1);
-                break;
-        }
-    }
-}
-
-//Simple binary tree insertion - adds to any empty slot, fills left before right
+//Simple binary tree insertion
 void insertRec(TreeNode* node, NodeData value){
     if(node == nullptr) {
         return; 
