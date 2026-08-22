@@ -1,20 +1,29 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
 #include "classes/book_class.hpp"
+#include "function_headers/cache_to_file.hpp"
 
 using json = nlohmann::json;
 
-void cacheBookAttribute(json& j, Book b){
-    j["Title"] = b.getTitle();
-    j["Author"] = b.getAuthor();
-    j["Edition"] = b.getEdition();
+void cacheBookAttribute(json& jsonArr, Book& b, int ID){
+        jsonArr = nlohmann::json::array();  
+
+    json bookJson;
+    bookJson["Title"] = b.getTitle();
+    bookJson["Author"] = b.getAuthor();
+    bookJson["Edition"] = b.getEdition();
+    bookJson["ISBN"] = ID;
+
+    jsonArr.push_back(bookJson);
 }
 
-void cacheCategories(std::string& cat){
-    json jsonArr = nlohmann::json::array();
-        jsonArr["Categories"].push_back(cat);
+void cacheCategories(std::string& cat, json& jsonArr){
+        jsonArr = nlohmann::json::array();  
+
+    jsonArr["Categories"].push_back(cat);
 }
 
 void createCategories(std::vector<std::string>& categories){
@@ -26,6 +35,7 @@ void createCategories(std::vector<std::string>& categories){
         return;
     }
 
+    json jsonArr = nlohmann::json::array();
     std::cout<<"Enter categorie/s: " << std::endl;
     for(int i = 0; i < count; i++){
         std::string categorie;
@@ -37,8 +47,9 @@ void createCategories(std::vector<std::string>& categories){
 
         std::getline(std::cin, categorie);
         categories.push_back(categorie);
-        cacheCategories(categorie);
+        cacheCategories(categorie, jsonArr);
     }
+    cacheToFile(jsonArr, "categories_cache");
 }
 
 //checks if categories vector is empty and prompts the user to create if empty
@@ -70,7 +81,7 @@ void checkCategories(std::vector<std::string>& categories){
                 createCategories(categories);
                 break;
             case 'n':
-                std::cout<<"No categories, ending program!" <<std::endl;
+                std::cout<<"No categories created, ending program!" <<std::endl;
                 exit(1);
                 break;
             default:

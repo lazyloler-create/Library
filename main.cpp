@@ -9,6 +9,7 @@
 #include "classes/book_class.hpp"
 #include "classes/treenode_class.hpp"
 #include "function_headers/categories_functions.hpp"
+#include "function_headers/cache_to_file.hpp"
 
 using json = nlohmann::json;
 
@@ -41,12 +42,12 @@ void insertRec(TreeNode* node, NodeData value){
 int main(){
     std::vector<std::string> categories;
     checkCategories(categories);
-    std::ofstream jsonFile("categoriesCache.json");
+    
     // Input books for each category
    std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
 
     std::vector<std::unique_ptr<TreeNode>> forest;
-    
+    json jsonBookArr;
     for(int i = 0; i < categories.size(); i++){
         NodeData categoryNode(categories[i]);
 
@@ -72,13 +73,14 @@ int main(){
             std::getline(std::cin, edition);
 
             book.setTitle(title);
-            book.setAuthor(author);
+            book.setAuthor(author); 
             book.setEdition(edition);
 
             // Store the book in a map structure
+            
             std::map<Book, int> bookMap;
             bookMap[book] = i; 
-
+            cacheBookAttribute(jsonBookArr, book, bookMap[book]);
             NodeData bookNode(std::move(bookMap));
 
             insertRec(forest[i].get(), bookNode);
@@ -92,12 +94,12 @@ int main(){
             }
         }
     }
+    cacheToFile(jsonBookArr, "books_cache");
     
     std::cout<<"Total categories: " << categories.size() << std::endl;
     for(int i = 0; i < categories.size(); i++){
         std::cout<<"Category "<<i+1<<": "<<categories[i]<<std::endl;
     }
 
-    jsonFile.close();
     return 0;
 }
