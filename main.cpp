@@ -17,26 +17,16 @@ bool isFileEmpty(std::fstream& file) {
     return file.peek() == std::ifstream::traits_type::eof();
 }
 
-//Simple binary tree insertion
-void insertRec(TreeNode* node, NodeData value){
-    if(node == nullptr) {
-        return; 
-    }
 
-    if(!node->left) {
-        std::unique_ptr<TreeNode> newNode = TreeNode::createNode(value);
-        node->left = std::move(newNode); 
-        return; 
-    }
-
-    else if(!node->right) {  
-        std::unique_ptr<TreeNode> newNode = TreeNode::createNode(value);
-        node->right = std::move(newNode);
+void BSTinsert(std::unique_ptr<TreeNode>& node, NodeData val){
+    if(node == nullptr){
+        node = TreeNode::createNode(val);
         return;
     }
-
-    if(node->left) insertRec(node->left.get(), value);  
-    if(node->right) insertRec(node->right.get(), value); 
+    if(val < node->book)
+        BSTinsert(node->left, val);
+    else
+        BSTinsert(node->right, val);
 }
 
 int main(){
@@ -83,7 +73,7 @@ int main(){
             cacheBookAttribute(jsonBookArr, book, bookMap[book]);
             NodeData bookNode(std::move(bookMap));
 
-            insertRec(forest[i].get(), bookNode);
+            BSTinsert(forest[i], bookNode);
 
             std::cout<<"Do you want to add another book? (y/n): ";
             char ch;
