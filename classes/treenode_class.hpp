@@ -15,13 +15,14 @@ using NodeData = std::variant<
 
 class TreeNode{
     private:    
-        TreeNode(NodeData val);
-        ~TreeNode();
+        
         
     public: 
         NodeData book;   
         std::unique_ptr<TreeNode> left{nullptr};
         std::unique_ptr<TreeNode> right{nullptr};
+        TreeNode(NodeData val);
+        ~TreeNode();
         
     bool isString();
     bool isMap();

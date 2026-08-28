@@ -10,8 +10,8 @@
 using json = nlohmann::json;
 
 
-void cacheBookAttribute(json& j, Book b, int ID);
-void cacheCategories(std::string& cat);
+void cacheBookAttribute(json& j, Book& b, int ID);
+void cacheCategories(std::string& cat, json& jsonArr);
 void createCategories(std::vector<std::string>& categories);
 void checkCategories(std::vector<std::string>& categories);
 
