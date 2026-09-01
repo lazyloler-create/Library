@@ -1,11 +1,10 @@
 #ifndef CATEGORIES_FUNCTIONS_HPP
 #define CATEGORIES_FUNCTIONS_HPP
 
-#include <iostream>
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
-#include "classes/book_class.hpp"
+#include "../classes/book_class.hpp"
 
 using json = nlohmann::json;
 

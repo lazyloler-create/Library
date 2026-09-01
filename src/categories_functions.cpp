@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
-#include "classes/book_class.hpp"
-#include "function_headers/cache_to_file.hpp"
+#include "../classes/book_class.hpp"
+#include "../function_headers/cache_to_file.hpp"
 
 using json = nlohmann::json;
 
