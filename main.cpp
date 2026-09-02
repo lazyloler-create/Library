@@ -65,7 +65,7 @@ int main(){
             // Store the book in a map structure
             
             std::map<Book, int> bookMap;
-            bookMap[book] = i; 
+            bookMap[book] = i + 1000000000000; 
             cacheBookAttribute(jsonBookArr, book, bookMap[book]);
             NodeData bookNode(std::move(bookMap));
 
