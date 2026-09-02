@@ -10,13 +10,9 @@
 #include "classes/book_class.hpp"
 #include "classes/treenode_class.hpp"
 #include "function_headers/categories_functions.hpp"
-#include "./function_headers/cache_to_file.hpp"
+#include "./function_headers/jsonFile.hpp"
 
 using json = nlohmann::json;
-
-bool isFileEmpty(std::fstream& file) {
-    return file.peek() == std::ifstream::traits_type::eof();
-}
 
 void BSTinsert(std::unique_ptr<TreeNode>& node, NodeData val){
     if(node == nullptr){
