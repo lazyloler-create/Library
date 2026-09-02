@@ -8,9 +8,11 @@
 using json = nlohmann::json;
 
 void cacheBookAttribute(json& jsonArr, Book& b, int ID){
-        jsonArr = nlohmann::json::array();  
+    if (jsonArr.is_null()) {
+        jsonArr = nlohmann::json::array();
+    }
 
-    json bookJson;
+    json bookJson = nlohmann::json::object();
     bookJson["Title"] = b.getTitle();
     bookJson["Author"] = b.getAuthor();
     bookJson["Edition"] = b.getEdition();
@@ -20,7 +22,12 @@ void cacheBookAttribute(json& jsonArr, Book& b, int ID){
 }
 
 void cacheCategories(std::string& cat, json& jsonArr){
-        jsonArr = nlohmann::json::array();  
+    if (jsonArr.is_null()) {
+        jsonArr = nlohmann::json::object();
+    }
+    if (!jsonArr.contains("Categories") || !jsonArr["Categories"].is_array()) {
+        jsonArr["Categories"] = nlohmann::json::array();
+    }
 
     jsonArr["Categories"].push_back(cat);
 }
@@ -34,7 +41,7 @@ void createCategories(std::vector<std::string>& categories){
         return;
     }
 
-    json jsonArr = nlohmann::json::array();
+    json jsonArr = nlohmann::json::object();
     std::cout<<"Enter categorie/s: " << std::endl;
     for(int i = 0; i < count; i++){
         std::string categorie;
