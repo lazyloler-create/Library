@@ -27,7 +27,14 @@ void BSTinsert(std::unique_ptr<TreeNode>& node, NodeData val){
 
 int main(){
     std::vector<std::string> categories;
-    checkCategories(categories);
+    json cachedCategories;
+    try{
+        std::ifstream categoriesCacheFile("categories_cache.json");
+        cachedCategories = json::parse(categoriesCacheFile);
+    }catch(...){
+
+    }
+    checkCategories(categories, cachedCategories);
     
     // Input books for each category
    std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
@@ -63,7 +70,7 @@ int main(){
             book.setEdition(edition);
 
             // Store the book in a map structure
-            
+
             std::map<Book, int> bookMap;
             bookMap[book] = i + 1000000000000; 
             cacheBookAttribute(jsonBookArr, book, bookMap[book]);

@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -58,8 +59,24 @@ void createCategories(std::vector<std::string>& categories){
     cacheToFile(jsonArr, "categories_cache");
 }
 
+std::vector<std::string> checkCachedCat(std::string fName, json& j){
+    std::vector<std::string> categories;
+    std::ifstream file(fName + ".json");
+    if(!file.is_open()){
+        std::cerr << "Error opening file: " << fName + ".json" << std::endl;
+        return {};
+    }
+
+    try {
+        categories = j.at("Categories").get<std::vector<std::string>>();
+    } catch (const json::out_of_range&) {
+        std::cerr << "Key is missing" << std::endl;
+    }
+    return categories;
+}
 //checks if categories vector is empty and prompts the user to create if empty
-void checkCategories(std::vector<std::string>& categories){
+void checkCategories(std::vector<std::string>& categories, json& j){
+    categories = checkCachedCat("categories_cache", j);
     if(!categories.empty()){
         std::cout<<"You alrleady have categories present, create more? \n(y/n)" << std::endl;
         char ch;
@@ -75,10 +92,10 @@ void checkCategories(std::vector<std::string>& categories){
             default:
                 std::cout<<"Invalid choice!" << std::endl;
                 exit(1);
-                break;
+                break; 
         }
     }
- if(categories.empty()){
+    if(categories.empty()){
         std::cout<<"You have no categories, create some? \n (y/n)" << std::endl;
         char ch;
         std::cin>>ch;
