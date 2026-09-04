@@ -86,7 +86,10 @@ void checkCategories(std::vector<std::string>& categories, json& j){
                 createCategories(categories);
                 break;
             case 'n':
-                std::cout<<"No categories, ending program!" <<std::endl;
+                std::cout<<"No new categories created! \n Existing categories: \n" <<std::endl;
+                for(auto i = 0; i < categories.size(); i++){
+                    std::cout<<categories[i]<<std::endl;
+                }
                 exit(1);
                 break;
             default:

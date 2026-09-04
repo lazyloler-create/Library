@@ -37,14 +37,13 @@ int main(){
     checkCategories(categories, cachedCategories);
     
     // Input books for each category
-   std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
+    std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
 
     std::vector<std::unique_ptr<TreeNode>> forest;
     json jsonBookArr;
     for(int i = 0; i < categories.size(); i++){
         NodeData categoryNode(categories[i]);
 
-        // Create category node with unique_ptr ownership
         std::unique_ptr<TreeNode> categoryNodePtr = TreeNode::createNode(categoryNode);
         forest.push_back(std::move(categoryNodePtr));
 
@@ -70,7 +69,6 @@ int main(){
             book.setEdition(edition);
 
             // Store the book in a map structure
-
             std::map<Book, int> bookMap;
             bookMap[book] = i + 1000000000000; 
             cacheBookAttribute(jsonBookArr, book, bookMap[book]);
