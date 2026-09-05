@@ -1,7 +1,6 @@
 #ifndef TREENODE_CLASS_HPP
 #define TREENODE_CLASS_HPP
 
-#include <iostream>
 #include <string>
 #include <map>
 #include <memory>
