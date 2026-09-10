@@ -1,10 +1,39 @@
 #include <memory>
-#include "../classes/treenode_class.hpp"
+#include <string>
 #include <nlohmann/json.hpp>
+#include <chrono>
 #include <ctime>
-
-
+#include "../classes/book_class.hpp"
+#include "../classes/treenode_class.hpp"
 using json = nlohmann::json;
+
+//gets local date in a string format d/m/y
+std::string localDate(){
+    auto now = std::chrono::system_clock::now();
+    auto t  = std::chrono::system_clock::to_time_t(now);
+    std::tm* tm          = std::localtime(&t);
+
+    std::string date;
+    int d  = tm->tm_mday;
+    date = std::to_string(d) + '/';
+    int m = tm->tm_mon + 1;
+    date = std::to_string(m) + '/';  
+    int y  = tm->tm_year + 1900;
+    date = std::to_string(y);
+    
+    return date;
+}
+
+class BookForRent{
+    private:
+        Book book;
+    public:
+
+    std::string getDate(){
+        auto date = localDate();
+        return date; 
+    }
+}; 
 
 std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData target) {
     if (!root) {
@@ -28,22 +57,18 @@ std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData t
             successor = successor->left.get();
         }
 
-        root->book = successor->book;
+        root->book  = successor->book;
         root->right = deleteNode(root->right, root->book);
     }
     return std::move(root);
 }
 
-void cacheRentedBook(std::unique_ptr<TreeNode>& tree){
-    std::time_t now;
-    struct tm* date; 
-    std::time(&now);
-    date = std::localtime(&now);
-    int day = date->tm_mday;
-    int month = date->tm_mon + 1;
-    int year = date->tm_year + 1900;
+
+void cacheRentedBook(std::unique_ptr<TreeNode>& node){
+    
 
     json j = json::object();
+     
 }
 
 void rentBook(std::unique_ptr<TreeNode>& node, NodeData& bookVal){

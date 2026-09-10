@@ -1,5 +1,4 @@
-#ifndef TREENODE_CLASS_HPP
-#define TREENODE_CLASS_HPP
+#pragma once 
 
 #include <string>
 #include <map>
@@ -29,5 +28,3 @@ class TreeNode{
     const std::unique_ptr<TreeNode>& getLeft() const { return left; }
     const std::unique_ptr<TreeNode>& getRight() const { return right; }
 };
-
-#endif

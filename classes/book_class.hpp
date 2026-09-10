@@ -1,8 +1,6 @@
-#ifndef BOOK_CLASS_HPP
-#define BOOK_CLASS_HPP
+#pragma once
 
 #include <string>
-#include <algorithm>
 
 class Book{
 private:  
@@ -44,5 +42,3 @@ public:
         return title == other.title && author == other.author && edition == other.edition;
     }
 };
-
-#endif
