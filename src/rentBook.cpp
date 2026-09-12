@@ -1,9 +1,10 @@
 #include <memory>
+#include <map>
+#include <vector>
 #include <string>
-#include <nlohmann/json.hpp>
 #include <chrono>
 #include <ctime>
-#include "../classes/book_class.hpp"
+#include <nlohmann/json.hpp>
 #include "../classes/treenode_class.hpp"
 using json = nlohmann::json;
 
@@ -24,25 +25,19 @@ std::string localDate(){
     return date;
 }
 
-class BookForRent{
-    private:
-        Book book;
-    public:
-
-    std::string getDate(){
-        auto date = localDate();
-        return date; 
-    }
-}; 
+std::string getDate(){
+    auto date = localDate();
+    return date; 
+}
 
 std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData target) {
     if (!root) {
         return nullptr;
     }
 
-    if (target < root->book) {
+    if (std::get<std::map<Book, int>>(target) < std::get<std::map<Book, int>>(root->book)) {
         root->left = deleteNode(root->left, std::move(target)); 
-    } else if (target > root->book) {
+    } else if (std::get<std::map<Book, int>>(target) > std::get<std::map<Book, int>>(root->book)) {
         root->right = deleteNode(root->right, std::move(target));
     } else {
         if (!root->left) {
@@ -63,12 +58,36 @@ std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData t
     return std::move(root);
 }
 
+//finds a tree based on its categorie (categorie is the root of a tree)
+std::unique_ptr<TreeNode> findTree(std::vector<std::unique_ptr<TreeNode>>& forest, std::unique_ptr<TreeNode>& target){
+    auto const tar = std::get<std::string>(target->book); // gets value of the target in string
+    for(auto it = 0; it < forest.size(); it++){
+        std::unique_ptr<TreeNode> temp = std::move(forest[it]);
+        auto tempVal = std::get<std::string>(temp->book); //gets the value of the current tree root
+        if(tempVal == tar){
+            return std::move(temp); //returns tree
+        }
+    }
+    return nullptr;
+}
 
-void cacheRentedBook(std::unique_ptr<TreeNode>& node){
-    
+//finds a node (book) and returns the node
+std::unique_ptr<TreeNode> findNode(std::unique_ptr<TreeNode>& tree, NodeData target){
+    if(!tree || std::get<std::map<Book, int>>(target) == std::get<std::map<Book, int>>(tree->book)){ //base case, checks if tree is null and compares target and tree value
+        auto newNode = std::move(tree);
+        return newNode;
+    }
 
-    json j = json::object();
-     
+    if(std::get<std::map<Book, int>>(target) < std::get<std::map<Book, int>>(tree->book)) //standard BST comparison
+        return findNode(tree->left, target);
+
+    return findNode(tree->right, target);
+}
+
+void cacheRentedBook(json& j, std::vector<std::unique_ptr<TreeNode>>& forest,NodeData book){
+    if(j.is_null()) j = nlohmann::json::object();
+
+    auto date = localDate(); 
 }
 
 void rentBook(std::unique_ptr<TreeNode>& node, NodeData& bookVal){
