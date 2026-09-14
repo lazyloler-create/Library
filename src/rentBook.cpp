@@ -28,11 +28,14 @@ std::string localDate(){
     return date;
 }
 
+//gets todays date in local time 
 std::string getDate(){
     auto date = localDate();
     return date; 
 }
 
+
+//deletes a book in a tree
 std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData target) {
     if (!root) {
         return nullptr;
@@ -87,6 +90,7 @@ TreeNode* findNode(std::unique_ptr<TreeNode>& tree, NodeData target) {
     return findNode(tree->right, target);
 }   
 
+//gets title, author and edition of a book that is declared with NodeData
 std::vector<std::string> getBookAttributes(const NodeData& book){
     std::vector<std::string> result;
     if (const auto* books = std::get_if<std::map<Book, int>>(&book)) {
@@ -99,6 +103,7 @@ std::vector<std::string> getBookAttributes(const NodeData& book){
     return result;
 }
 
+//gets isbn of a book that is declared with NodeData
 int getIsbn(const NodeData& book){
     int ISBN = 0;
     if (const auto* books = std::get_if<std::map<Book, int>>(&book)) {
@@ -109,6 +114,7 @@ int getIsbn(const NodeData& book){
     return ISBN;
 }
 
+//caches the book in a json file before renting 
 void cacheRentedBook(json& j, std::unique_ptr<TreeNode>& tree, NodeData book){
     if(j.is_null()) j = nlohmann::json::object();
 
@@ -129,6 +135,8 @@ void cacheRentedBook(json& j, std::unique_ptr<TreeNode>& tree, NodeData book){
     };    
 }
 
+//function for renting a book,
+//finds the needed tree by categorie of the book, finds the book in the tree, caches it and deletes the node in the tree
 void rentBook(std::vector<std::unique_ptr<TreeNode>>& forest, std::unique_ptr<TreeNode>& tree, NodeData& bookVal){
     json j;
     auto foundTree = findTree(forest, bookVal);

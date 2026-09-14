@@ -84,10 +84,17 @@ int main(){
     }
     cacheToFile(jsonBookArr, "books_cache");
     
+    
     std::cout<<"Total categories: " << categories.size() << std::endl;
     for(int i = 0; i < categories.size(); i++){
-        std::cout<<"Category "<<i+1<<": "<<categories[i]<<std::endl;
+        std::cout<<"Category "<<i+1<<": "<<categories[i]<<'\n';
     }
+
+    std::cout<<"Which book do you want to rent: " <<std::endl;
+    NodeData rBook;
+    std::cin>> std::get<std::string>(rBook);
+    
+    
 
     return 0;
 }
