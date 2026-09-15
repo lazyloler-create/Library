@@ -12,9 +12,6 @@ using NodeData = std::variant<
 >;
 
 class TreeNode{
-    private:    
-        
-        
     public: 
         NodeData book;   
         std::unique_ptr<TreeNode> left{nullptr};
@@ -22,9 +19,5 @@ class TreeNode{
         TreeNode(NodeData val);
         ~TreeNode();
         
-    bool isString();
-    bool isMap();
     static std::unique_ptr<TreeNode> createNode(NodeData node);
-    const std::unique_ptr<TreeNode>& getLeft() const { return left; }
-    const std::unique_ptr<TreeNode>& getRight() const { return right; }
 };

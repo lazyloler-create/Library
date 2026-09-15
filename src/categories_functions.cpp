@@ -8,8 +8,8 @@
 
 using json = nlohmann::json;
 
-//
-void cacheBookAttribute(json& jsonArr, Book& b, int ID){
+//returns a json with books attributes 
+json cacheBookAttribute(json& jsonArr, Book& b, int ID){
     if (jsonArr.is_null()) {
         jsonArr = nlohmann::json::array();
     }
@@ -21,9 +21,11 @@ void cacheBookAttribute(json& jsonArr, Book& b, int ID){
     bookJson["ISBN"] = ID;
 
     jsonArr.push_back(bookJson);
+    return jsonArr;
 }
 
-void cacheCategories(std::string& cat, json& jsonArr){
+//returns a json with categories cached
+json cacheCategories(std::string& cat, json& jsonArr){
     if (jsonArr.is_null()) {
         jsonArr = nlohmann::json::object();
     }
@@ -32,8 +34,10 @@ void cacheCategories(std::string& cat, json& jsonArr){
     }
 
     jsonArr["Categories"].push_back(cat);
+    return jsonArr;
 }
 
+//prompts user how many categories to create and caches them
 void createCategories(std::vector<std::string>& categories){
     std::cout<<"How many categories do you want to create:" <<std::endl;
     int count = 0;
@@ -43,7 +47,7 @@ void createCategories(std::vector<std::string>& categories){
         return;
     }
 
-    json jsonArr = nlohmann::json::object();
+    json j;
     std::cout<<"Enter categorie/s: " << std::endl;
     for(int i = 0; i < count; i++){
         std::string categorie;
@@ -54,12 +58,14 @@ void createCategories(std::vector<std::string>& categories){
         }
 
         std::getline(std::cin, categorie);
+        json jsonArr = nlohmann::json::object();
         categories.push_back(categorie);
-        cacheCategories(categorie, jsonArr);
+        j = cacheCategories(categorie, jsonArr);
     }
-    cacheToFile(jsonArr, "categories_cache");
+    cacheToFile(j, "categories_cache");
 }
 
+//checks all the cached categories in categories_cache.json
 std::vector<std::string> checkCachedCat(std::string fName, json& j){
     std::vector<std::string> categories;
     std::ifstream file(fName + ".json");

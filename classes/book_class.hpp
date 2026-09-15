@@ -28,17 +28,4 @@ public:
     void setEdition(std::string& edition){
         this->edition = edition;
     };
-
-    // Comparison operators for std::map
-    bool operator<(const Book& other) const {
-        return title < other.title;
-    }
-
-    bool operator>(const Book& other) const {
-        return title > other.title;
-    }
-
-    bool operator==(const Book& other) const {
-        return title == other.title && author == other.author && edition == other.edition;
-    }
 };

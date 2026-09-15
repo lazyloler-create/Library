@@ -38,13 +38,14 @@ int main(){
     
     std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
     std::vector<std::unique_ptr<TreeNode>> forest;
+
     json jsonBookArr;
     for(int i = 0; i < categories.size(); i++){
         NodeData categoryNode(categories[i]);
 
         std::unique_ptr<TreeNode> categoryNodePtr = TreeNode::createNode(categoryNode);
         forest.push_back(std::move(categoryNodePtr));
-
+        json jsonBArr;
         Book book;
         bool keepInserting = true;
 
@@ -68,7 +69,7 @@ int main(){
 
             std::map<Book, int> bookMap;
             bookMap[book] = i + 1000000000000; 
-            cacheBookAttribute(jsonBookArr, book, bookMap[book]);
+            jsonBookArr = cacheBookAttribute(jsonBArr, book, bookMap[book]);
             NodeData bookNode(std::move(bookMap));
 
             BSTinsert(forest[i], bookNode);
@@ -94,7 +95,5 @@ int main(){
     NodeData rBook;
     std::cin>> std::get<std::string>(rBook);
     
-    
-
     return 0;
 }
