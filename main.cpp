@@ -11,6 +11,7 @@
 #include "classes/treenode_class.hpp"
 #include "function_headers/categories_functions.hpp"
 #include "./function_headers/jsonFile.hpp"
+#include "./function_headers/rentBook.hpp"
 
 using json = nlohmann::json;
 
@@ -85,7 +86,6 @@ int main(){
     }
     cacheToFile(jsonBookArr, "books_cache");
     
-    
     std::cout<<"Total categories: " << categories.size() << std::endl;
     for(int i = 0; i < categories.size(); i++){
         std::cout<<"Category "<<i+1<<": "<<categories[i]<<'\n';
@@ -93,7 +93,10 @@ int main(){
 
     std::cout<<"Which book do you want to rent: " <<std::endl;
     NodeData rBook;
+    auto date = getReturnDate();
     std::cin>> std::get<std::string>(rBook);
+    std::cout<<"Book" << std::get<std::string>(rBook) << " is rented until" << std::endl;
+    std::cout<< date << std::endl;
     
     return 0;
 }

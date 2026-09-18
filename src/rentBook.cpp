@@ -34,6 +34,21 @@ std::string getDate(){
     return date; 
 }
 
+std::string getReturnDate(){
+    auto now = std::chrono::system_clock::now();
+    auto t  = std::chrono::system_clock::to_time_t(now);
+    std::tm* tm          = std::localtime(&t);
+
+    std::string date;
+    int d  = tm->tm_mday;
+    date = std::to_string(d) + '/';
+    int m = tm->tm_mon + 2;
+    date = std::to_string(m) + '/';  
+    int y  = tm->tm_year + 1900;
+    date = std::to_string(y);
+
+    return date;
+}
 
 //deletes a book in a tree
 std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData target) {
