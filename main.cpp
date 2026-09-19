@@ -11,6 +11,7 @@
 #include "./function_headers/rentBook.hpp"
 
 using json = nlohmann::json;
+auto url = loadApiFile("api");
 
 void BSTinsert(std::unique_ptr<TreeNode>& node, NodeData val){
     if(node == nullptr){

@@ -36,14 +36,14 @@ public:
     }
 
     bool operator<(const Book& other) const {
-        return title < other.title;
+        return std::stoi(ISBN) > std::stoi(other.ISBN);
     }
 
     bool operator>(const Book& other) const {
-        return title > other.title;
+        return std::stoi(ISBN) > std::stoi(other.ISBN);
     }
 
     bool operator==(const Book& other) const {
-        return title == other.title && author == other.author && date == other.date;
+        return title == other.title && author == other.author && date == other.date && std::stoi(other.ISBN) == std::stoi(ISBN);
     }
 };

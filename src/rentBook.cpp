@@ -1,11 +1,12 @@
 #include <memory>
-#include <map>
 #include <variant>
 #include <vector>
 #include <string>
 #include <chrono>
 #include <ctime>
 #include <nlohmann/json.hpp>
+
+#include "../classes/book_class.hpp"
 #include "../classes/treenode_class.hpp"
 #include "../function_headers/jsonFile.hpp"
 
@@ -56,9 +57,9 @@ std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData t
         return nullptr;
     }
 
-    if (std::get<std::map<Book, int>>(target) < std::get<std::map<Book, int>>(root->book)) {
+    if (target < root->book) {
         root->left = deleteNode(root->left, std::move(target)); 
-    } else if (std::get<std::map<Book, int>>(target) > std::get<std::map<Book, int>>(root->book)) {
+    } else if (target > root->book) {
         root->right = deleteNode(root->right, std::move(target));
     } else {
         if (!root->left) {
@@ -96,38 +97,29 @@ std::unique_ptr<TreeNode> findTree(std::vector<std::unique_ptr<TreeNode>>& fores
 TreeNode* findNode(std::unique_ptr<TreeNode>& tree, NodeData target) {
     if (!tree) return nullptr;
 
-    if (std::get<std::map<Book, int>>(target) == std::get<std::map<Book, int>>(tree->book))
+    if (target == tree->book)
         return tree.get(); //returns the found node
 
-    if (std::get<std::map<Book, int>>(target) < std::get<std::map<Book, int>>(tree->book))
+    if (target < tree->book)
         return findNode(tree->left, target);
 
     return findNode(tree->right, target);
 }   
 
-//gets title, author and edition of a book that is declared with NodeData
+//gets title, author, date and ISBN of a book that is declared with NodeData
 std::vector<std::string> getBookAttributes(const NodeData& book){
     std::vector<std::string> result;
-    if (const auto* books = std::get_if<std::map<Book, int>>(&book)) {
-        for (const auto& [book, isbn] : *books) {
-            result.push_back(book.getTitle());
-            result.push_back(book.getAuthor());
-            result.push_back(book.getEdition());
+    auto const b = std::get<Book>(book);
+
+    for(int i = 0; i < 4; i++){
+            result.push_back(b.getTitle());
+            result.push_back(b.getAuthor());
+            result.push_back(b.getDate());
+            result.push_back(b.getISBN());
         }
-    }
     return result;
 }
 
-//gets isbn of a book that is declared with NodeData
-int getIsbn(const NodeData& book){
-    int ISBN = 0;
-    if (const auto* books = std::get_if<std::map<Book, int>>(&book)) {
-        for (const auto& [book, isbn] : *books) {
-            ISBN = isbn;
-        }
-    }
-    return ISBN;
-}
 
 //caches the book in a json file before renting 
 void cacheRentedBook(json& j, std::unique_ptr<TreeNode>& tree, NodeData book){
@@ -136,17 +128,16 @@ void cacheRentedBook(json& j, std::unique_ptr<TreeNode>& tree, NodeData book){
     if(!j.contains("Rented books") || !j.is_array())
         j["Rented book"] = nlohmann::json::array();
 
-    auto date = localDate(); 
+    auto const date = localDate(); 
     auto bookCategorie = std::get<std::string>(book);
 
     auto targetBook = findNode(tree, book);
     auto data = targetBook->book;
     
-    auto bookAtt = getBookAttributes(book);
-    auto ISBN = getIsbn(book);
+    auto const bookAtt = getBookAttributes(book);
 
     j["Rented books: "] = {
-        {bookAtt[0], bookAtt[1], bookAtt[2], ISBN, date},
+        {bookAtt[0], bookAtt[1], bookAtt[2], bookAtt[3], date},
     };    
 }
 
