@@ -1,13 +1,10 @@
 #include <iostream>
 #include <fstream>
-#include <map>
 #include <string>
-#include <cctype>
 #include <vector>
 #include <variant>
 #include <nlohmann/json.hpp>
 
-#include "classes/book_class.hpp"
 #include "classes/treenode_class.hpp"
 #include "function_headers/categories_functions.hpp"
 #include "./function_headers/jsonFile.hpp"
@@ -29,6 +26,7 @@ void BSTinsert(std::unique_ptr<TreeNode>& node, NodeData val){
 int main(){
     std::vector<std::string> categories;
     json cachedCategories;
+
     try{
         std::ifstream categoriesCacheFile("categories_cache.json");
         cachedCategories = json::parse(categoriesCacheFile);
@@ -39,7 +37,8 @@ int main(){
     
     std::cout<<"Enter book title, author, edition and book ID for each book: " << std::endl;
     std::vector<std::unique_ptr<TreeNode>> forest;
-
+    
+    /*
     json jsonBookArr;
     for(int i = 0; i < categories.size(); i++){
         NodeData categoryNode(categories[i]);
@@ -50,6 +49,7 @@ int main(){
         Book book;
         bool keepInserting = true;
 
+        
         while(keepInserting){
             std::cout<<"Enter book title: ";
             std::string title;
@@ -66,7 +66,7 @@ int main(){
             
             book.setTitle(title);
             book.setAuthor(author); 
-            book.setEdition(edition);
+            book.setDate(edition);
 
             std::map<Book, int> bookMap;
             bookMap[book] = i + 1000000000000; 
@@ -83,8 +83,9 @@ int main(){
                 keepInserting = false;
             }
         }
-    }
-    cacheToFile(jsonBookArr, "books_cache");
+    }*/
+
+    //cacheToFile(jsonBookArr, "books_cache");
     
     std::cout<<"Total categories: " << categories.size() << std::endl;
     for(int i = 0; i < categories.size(); i++){

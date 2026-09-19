@@ -1,14 +1,13 @@
 #pragma once 
 
 #include <string>
-#include <map>
 #include <memory>
 #include <variant>
 #include "./book_class.hpp"
 
 using NodeData = std::variant<
     std::string, 
-    std::map<Book, int>
+    Book
 >;
 
 class TreeNode{
