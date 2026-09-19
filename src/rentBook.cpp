@@ -29,12 +29,6 @@ std::string localDate(){
     return date;
 }
 
-//gets todays date in local time 
-std::string getDate(){
-    auto date = localDate();
-    return date; 
-}
-
 std::string getReturnDate(){
     auto now = std::chrono::system_clock::now();
     auto t  = std::chrono::system_clock::to_time_t(now);

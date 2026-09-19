@@ -35,6 +35,7 @@ public:
         this->ISBN = ISBN;
     }
 
+    //comparetors needed for binary search tree
     bool operator<(const Book& other) const {
         return std::stoi(ISBN) > std::stoi(other.ISBN);
     }
@@ -44,6 +45,9 @@ public:
     }
 
     bool operator==(const Book& other) const {
-        return title == other.title && author == other.author && date == other.date && std::stoi(other.ISBN) == std::stoi(ISBN);
+        return title == other.title 
+        && author == other.author 
+        && date == other.date 
+        && std::stoi(other.ISBN) == std::stoi(ISBN);
     }
 };
