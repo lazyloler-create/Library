@@ -11,7 +11,7 @@ void cacheToFile(json& j, std::string fName){
 
 //returns a string with a url from an api json file,
 std::string loadApiFile(std::string fName){
-    std::ifstream f(fName + "json");
+    std::ifstream f(fName + ".json");
     auto j = nlohmann::json::parse(f);
     return j["api_url"]; //"api_url" is an string in json containing a link to open library API
 }
