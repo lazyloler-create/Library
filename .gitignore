@@ -1,4 +1,5 @@
 .vscode/
+build/
 library_app
 .gitignore
 books_cache.json
