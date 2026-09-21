@@ -5,3 +5,4 @@ library_app
 books_cache.json
 categories_cache.json
 api.json
+cpp-httplib/
