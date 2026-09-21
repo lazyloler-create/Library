@@ -4,6 +4,7 @@
 ``
     cmake -B build
     cmake --build build
+    #cmake --build build -j$(nproc) #for multi core compiling   
     ./build/myapp   
 ``
 
