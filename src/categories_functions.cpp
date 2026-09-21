@@ -70,7 +70,6 @@ std::vector<std::string> checkCachedCat(std::string fName, json& j){
     std::vector<std::string> categories;
     std::ifstream file(fName + ".json");
     if(!file.is_open()){
-        std::cerr << "Error opening file: " << fName + ".json" << std::endl;
         return {};
     }
 
