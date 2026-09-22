@@ -19,4 +19,5 @@ class TreeNode{
         ~TreeNode();
         
     static std::unique_ptr<TreeNode> createNode(NodeData node);
+    static void insert(std::unique_ptr<TreeNode>& node, NodeData val);
 };

@@ -21,6 +21,7 @@ add_executable(library_app
     src/checkInput.cpp
     src/rentBook.cpp
     src/getBookInfo.cpp
+    src/file_functions.cpp
 )
 
 target_compile_definitions(library_app PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
