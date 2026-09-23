@@ -14,7 +14,6 @@ using json = nlohmann::json;
 auto url = loadApiFile("api");
 
 
-
 int main(){
     std::vector<std::string> categories;
     json cachedCategories;

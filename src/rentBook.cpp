@@ -74,18 +74,7 @@ std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData t
     return std::move(root);
 }
 
-//finds a tree based on its categorie (categorie is the root of a tree)
-std::unique_ptr<TreeNode> findTree(std::vector<std::unique_ptr<TreeNode>>& forest, NodeData& target){
-    auto const tar = std::get<std::string>(target); // gets value of the target in string
-    for(auto it = 0; it < forest.size(); it++){
-        std::unique_ptr<TreeNode> temp = std::move(forest[it]);
-        auto tempVal = std::get<std::string>(temp->book); //gets the value of the current tree root
-        if(tempVal == tar){
-            return std::move(temp); //returns tree
-        }
-    }
-    return nullptr;
-}
+
 
 //finds a node (book) and returns the node
 TreeNode* findNode(std::unique_ptr<TreeNode>& tree, NodeData target) {
@@ -139,7 +128,7 @@ void cacheRentedBook(json& j, std::unique_ptr<TreeNode>& tree, NodeData book){
 //finds the needed tree by categorie of the book, finds the book in the tree, caches it and deletes the node in the tree
 void rentBook(std::vector<std::unique_ptr<TreeNode>>& forest, std::unique_ptr<TreeNode>& tree, NodeData& bookVal){
     json j;
-    auto foundTree = findTree(forest, bookVal);
+    std::unique_ptr<TreeNode> foundTree = findTree(forest, bookVal);
     auto foundBook = findNode(foundTree, bookVal);
     cacheRentedBook(j, foundTree, foundBook->book);
     cacheToFile(j, "Rented books");
