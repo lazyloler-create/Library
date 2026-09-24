@@ -1,7 +1,6 @@
 #include <string>
 #include <filesystem>
 #include <iostream>
-#include <fstream>
 #include "../classes/open_file.hpp"
 
 namespace fs = std::filesystem;
@@ -9,14 +8,6 @@ namespace fs = std::filesystem;
 
 std::string getDir(OpenFile& f){
      return f.path.parent_path();
-}
-
-bool checkIfOpen(OpenFile& f){
-    if(!f.stream.is_open()){
-        std::cout<<"Couldn't open file at: " << getDir(f) << std::endl;
-        return false;
-    }
-    return true;
 }
 
 void moveToDir(const std::string& src, const std::string& dest){

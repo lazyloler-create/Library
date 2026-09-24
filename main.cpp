@@ -11,8 +11,7 @@
 #include "./function_headers/rentBook.hpp"
 
 using json = nlohmann::json;
-auto url = loadApiFile("api");
-
+auto url = loadApiFile("api.json");
 
 
 int main(){
