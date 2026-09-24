@@ -1,6 +1,6 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
-#include "../function_headers/file_functions.hpp"
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -13,7 +13,8 @@ void cacheToFile(json& j, std::string fName){
 //returns a string with a url from an api json file,
 std::string loadApiFile(std::string fName){
     std::ifstream f(fName + ".json");
-    if(!checkIfOpen(f)){
+    if(!f.is_open()){
+        std::cout<<"Cannot open file" << fName + ".json" << std::endl;
         return {};
     }
     auto j = nlohmann::json::parse(f);
