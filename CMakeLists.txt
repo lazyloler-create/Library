@@ -11,7 +11,14 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
   GIT_TAG v0.18.5
 )
-FetchContent_MakeAvailable(cpp-httplib)
+
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(cpp-httplib googletest)
 
 add_executable(library_app
     main.cpp
@@ -25,4 +32,15 @@ add_executable(library_app
 )
 
 target_compile_definitions(library_app PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
-target_link_libraries(library_app PRIVATE httplib::httplib OpenSSL::SSL OpenSSL::Crypto)   
+target_link_libraries(library_app PRIVATE httplib::httplib OpenSSL::SSL OpenSSL::Crypto)
+
+enable_testing()
+
+add_executable(library_tests
+  Tests/tests.cpp
+)
+
+target_link_libraries(library_tests PRIVATE GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(library_tests)
