@@ -1,63 +1,85 @@
 #include <memory>
-#include <vector>
 #include "../classes/treenode_class.hpp"
 
-TreeNode::TreeNode(NodeData data) : book(std::move(data)), left(nullptr), right(nullptr) {}
+TreeNode::TreeNode(Book data)
+    : book(std::move(data)), left(nullptr), right(nullptr) {}
 
-std::unique_ptr<TreeNode> TreeNode::createNode(NodeData node) {
-    return std::make_unique<TreeNode>(std::move(node));
+std::unique_ptr<TreeNode> TreeNode::createNode(Book book) {
+    return std::make_unique<TreeNode>(std::move(book));
 }
 
-std::unique_ptr<TreeNode> findTree(std::vector<std::unique_ptr<TreeNode>>& forest, NodeData& target){
-    if(forest.empty()) return nullptr;
-
-    size_t n = forest.size();
-    auto const tar = std::get<std::string>(target); // gets value of the target in string
-    for(auto it = 0; it < n - 1; it++){
-        auto current = std::get<std::string>(forest[it]->book); //gets the value of the current tree root
-        auto next = std::get<std::string>(forest[it + 1]->book);
-        if(current == tar){
-            return std::move(forest[it]); //returns tree
-        }
-        if(it + 1 < n && forest[it + 1]){
-            return std::move(forest[it + 1]);
-        }
-    }
-    return nullptr;
-}
-
-std::unique_ptr<TreeNode> newTree(std::unique_ptr<TreeNode>& tree, NodeData& categorie, std::vector<std::unique_ptr<TreeNode>>& forest){
-    auto find = findTree(forest, categorie);
-    if(find){
-       return nullptr; 
-    }
-
-    if(std::get<std::string>(tree->book) != std::get<std::string>(categorie)){
-        std::unique_ptr<TreeNode> newTree = TreeNode::createNode(categorie);
-        forest.push_back(newTree);
-        return newTree;
-    } 
-    return nullptr;
-}
-
-void insert(std::unique_ptr<TreeNode>& node, NodeData val, std::vector<std::unique_ptr<TreeNode>>& forest){
-    NodeData temp = std::get<std::string>(val); 
-    if(node == nullptr){
-        node = TreeNode::createNode(val);
+void insert(std::unique_ptr<TreeNode>& node, Book book) {
+    if (!node) {
+        node = TreeNode::createNode(std::move(book));
         return;
     }
 
-    auto newT = newTree(node, val, forest);
-    if(!newT){
-        node = std::move(newT);
+    if (book.getISBN() == node->book.getISBN()) {
+        return;
     }
 
-    if(val < node->book){
-        insert(node->left, val);
+    if (book.getISBN() < node->book.getISBN()) {
+        insert(node->left, std::move(book));
+    } else {
+        insert(node->right, std::move(book));
     }
-    else{
-        insert(node->right, val);
+}
+
+void insertBook(CategoryTrees& trees, const std::string& category, Book book){
+    auto& root = trees[category];
+
+    if (!root) {
+        root = std::make_unique<TreeNode>(std::move(book));
+        return;
     }
+
+    insert(root, std::move(book));
+}
+
+//deletes a book in a tree
+std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, Book target) {
+    if (!root) {
+        return nullptr;
+    }
+
+    if (target.getISBN() < root->book.getISBN()) {
+        root->left = deleteNode(root->left, std::move(target)); 
+    } else if (target.getISBN() > root->book.getISBN()) {
+        root->right = deleteNode(root->right, std::move(target));
+    } else {
+        if (!root->left) {
+            return std::move(root->right);
+        }
+        if (!root->right) {
+            return std::move(root->left);
+        }
+
+        TreeNode* successor = root->right.get();
+        while (successor->left) {
+            successor = successor->left.get();
+        }
+
+        root->book  = successor->book;
+        root->right = deleteNode(root->right, root->book);
+    }
+    return std::move(root);
+}
+
+std::unique_ptr<TreeNode> findNode(std::unique_ptr<TreeNode>& tree, Book target){
+    if(!tree){
+        return nullptr;
+    }
+
+    if(tree->book.getISBN() == target.getISBN()){
+        return std::make_unique<TreeNode>(std::move(tree->book));
+    }
+
+     if (target.getISBN() < tree->book.getISBN()) {
+        insert(tree->left, target);
+    } else {
+        insert(tree->right, target);
+    }
+    return nullptr;
 }
 
 TreeNode::~TreeNode() = default;

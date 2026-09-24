@@ -1,5 +1,4 @@
 #include <memory>
-#include <variant>
 #include <vector>
 #include <string>
 #include <chrono>
@@ -45,55 +44,9 @@ std::string getReturnDate(){
     return date;
 }
 
-//deletes a book in a tree
-std::unique_ptr<TreeNode> deleteNode(std::unique_ptr<TreeNode>& root, NodeData target) {
-    if (!root) {
-        return nullptr;
-    }
-
-    if (target < root->book) {
-        root->left = deleteNode(root->left, std::move(target)); 
-    } else if (target > root->book) {
-        root->right = deleteNode(root->right, std::move(target));
-    } else {
-        if (!root->left) {
-            return std::move(root->right);
-        }
-        if (!root->right) {
-            return std::move(root->left);
-        }
-
-        TreeNode* successor = root->right.get();
-        while (successor->left) {
-            successor = successor->left.get();
-        }
-
-        root->book  = successor->book;
-        root->right = deleteNode(root->right, root->book);
-    }
-    return std::move(root);
-}
-
-
-
-//finds a node (book) and returns the node
-TreeNode* findNode(std::unique_ptr<TreeNode>& tree, NodeData target) {
-    if (!tree) return nullptr;
-
-    if (target == tree->book)
-        return tree.get(); //returns the found node
-
-    if (target < tree->book)
-        return findNode(tree->left, target);
-
-    return findNode(tree->right, target);
-}   
-
 //gets title, author, date and ISBN of a book that is declared with NodeData
-std::vector<std::string> getBookAttributes(const NodeData& book){
+std::vector<std::string> getBookAttributes(const Book& b){
     std::vector<std::string> result;
-    auto const b = std::get<Book>(book);
-
     for(int i = 0; i < 4; i++){
             result.push_back(b.getTitle());
             result.push_back(b.getAuthor());
@@ -103,34 +56,27 @@ std::vector<std::string> getBookAttributes(const NodeData& book){
     return result;
 }
 
-
 //caches the book in a json file before renting 
-void cacheRentedBook(json& j, std::unique_ptr<TreeNode>& tree, NodeData book){
+void cacheRentedBook(json& j, Book book){
     if(j.is_null()) j = nlohmann::json::object();
 
     if(!j.contains("Rented books") || !j.is_array())
         j["Rented book"] = nlohmann::json::array();
 
-    auto const date = localDate(); 
-    auto bookCategorie = std::get<std::string>(book);
-
-    auto targetBook = findNode(tree, book);
-    auto data = targetBook->book;
-    
     auto const bookAtt = getBookAttributes(book);
 
-    j["Rented books: "] = {
-        {bookAtt[0], bookAtt[1], bookAtt[2], bookAtt[3], date},
+    j["Rented books: "] = { 
+        {bookAtt[0], bookAtt[1], bookAtt[2], bookAtt[3], localDate(), getReturnDate()},
     };    
 }
 
 //function for renting a book,
 //finds the needed tree by categorie of the book, finds the book in the tree, caches it and deletes the node in the tree
-void rentBook(std::vector<std::unique_ptr<TreeNode>>& forest, std::unique_ptr<TreeNode>& tree, NodeData& bookVal){
+void rentBook(std::unique_ptr<TreeNode>& tree, Book& bookVal){
     json j;
-    std::unique_ptr<TreeNode> foundTree = findTree(forest, bookVal);
-    auto foundBook = findNode(foundTree, bookVal);
-    cacheRentedBook(j, foundTree, foundBook->book);
+
+    auto book = findNode(tree, bookVal);
+    cacheRentedBook(j, book->book);
     cacheToFile(j, "Rented books");
-    deleteNode(foundTree, foundBook->book);
+    deleteNode(tree, book->book);
 } 
