@@ -26,7 +26,7 @@ void insert(std::unique_ptr<TreeNode>& node, Book book) {
 }
 
 void insertBook(CategoryTrees& trees, const std::string& category, Book book){
-    auto& root = trees[category];
+    auto& root =trees[category];
 
     if (!root) {
         root = std::make_unique<TreeNode>(std::move(book));
@@ -74,7 +74,7 @@ std::unique_ptr<TreeNode> findNode(std::unique_ptr<TreeNode>& tree, Book target)
         return std::make_unique<TreeNode>(std::move(tree->book));
     }
 
-     if (target.getISBN() < tree->book.getISBN()) {
+     if (target.getISBN() < tree->book.getISBN()){
         insert(tree->left, target);
     } else {
         insert(tree->right, target);

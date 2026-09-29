@@ -37,8 +37,7 @@ target_link_libraries(library_app PRIVATE httplib::httplib OpenSSL::SSL OpenSSL:
 enable_testing()
 
 add_executable(library_tests
-  Tests/tests.cpp
-)
+  Tests/tests.cpp)
 
 target_link_libraries(library_tests PRIVATE GTest::gtest_main)
 

@@ -1,11 +1,14 @@
+#include <fstream>
 #include <gtest/gtest.h>
 #include <vector>
-
+#include <nlohmann/json.hpp>
+#include <fstream>
 #include "../classes/treenode_class.hpp"
 #include "../function_headers/categories_functions.hpp"
 #include "../function_headers/jsonFile.hpp"
 #include "../function_headers/rentBook.hpp"
-
+#include "../function_headers/checkInput.hpp"
+#include "../function_headers/getBookInfo.hpp"
 
 /*
 What needs to be tested:
@@ -49,4 +52,22 @@ std::vector<std::string> bookList = {
   "Steve Jobs",
   "Becoming"
 };
+
+TEST(CacheCategoriesTest, CachedCorrectly){
+  json j;
+  auto val = cacheCategories("categories_cache", j);
+  std::ifstream f("categories_cache.json");
+
+  EXPECT_EQ(val, val.at("Categories"));
+}
+
+TEST(LoadCategoriesCacheTest, EmptyArray){
+  auto arr = checkCachedCat("categories_cache");
+  EXPECT_EQ(arr, arr.empty());
+}
+
+TEST(LoadCategoriesCacheTest, LoadedCorrectly){
+  auto arr = checkCachedCat("categories_cache");
+  EXPECT_EQ(arr, !arr.empty());
+}
 

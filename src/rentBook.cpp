@@ -76,7 +76,7 @@ void rentBook(std::unique_ptr<TreeNode>& tree, Book& bookVal){
     json j;
 
     auto book = findNode(tree, bookVal);
-    cacheRentedBook(j, book->book);
+    cacheRentedBook(j, book->book); 
     cacheToFile(j, "Rented books");
     deleteNode(tree, book->book);
 } 

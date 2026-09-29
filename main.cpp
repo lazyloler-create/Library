@@ -1,18 +1,12 @@
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-#include <variant>
 #include <nlohmann/json.hpp>
 
-#include "classes/treenode_class.hpp"
 #include "function_headers/categories_functions.hpp"
 #include "./function_headers/jsonFile.hpp"
-#include "./function_headers/rentBook.hpp"
 
 using json = nlohmann::json;
-auto url = loadApiFile("api.json");
-
 
 int main(){
     std::vector<std::string> categories;
@@ -24,8 +18,6 @@ int main(){
     }catch(...){
 
     }
-    checkCategories(categories, cachedCategories);
-   
     
     return 0;
 }

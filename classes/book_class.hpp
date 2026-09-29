@@ -7,6 +7,7 @@ private:
     std::string title;
     std::string author;
     std::string date;
+    std::string edition;
     std::string ISBN;
 public:
     std::string getTitle() const {
@@ -20,6 +21,9 @@ public:
     };
     std::string getISBN() const {
         return ISBN;
+    };
+    std::string getEdition() const {
+        return edition;
     }
 
     void setTitle(std::string& title){
@@ -33,9 +37,11 @@ public:
     };
     void setISBN(std::string& ISBN){
         this->ISBN = ISBN;
+    };
+    void setEdition(std::string& edition){
+        this->edition = edition;
     }
 
-    //comparetors needed for binary search tree
     bool operator<(const Book& other) const {
         return std::stoi(ISBN) > std::stoi(other.ISBN);
     }
