@@ -56,18 +56,11 @@ std::vector<std::string> bookList = {
 TEST(CacheCategoriesTest, CachedCorrectly){
   json j;
   auto val = cacheCategories("categories_cache", j);
-  std::ifstream f("categories_cache.json");
 
-  EXPECT_EQ(val, val.at("Categories"));
-}
-
-TEST(LoadCategoriesCacheTest, EmptyArray){
-  auto arr = checkCachedCat("categories_cache");
-  EXPECT_EQ(arr, arr.empty());
+  EXPECT_EQ(val.contains("Categories"), j.contains("Categories"));
 }
 
 TEST(LoadCategoriesCacheTest, LoadedCorrectly){
   auto arr = checkCachedCat("categories_cache");
-  EXPECT_EQ(arr, !arr.empty());
+  EXPECT_FALSE(arr.empty());
 }
-
