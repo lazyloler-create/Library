@@ -6,24 +6,34 @@
 using json = nlohmann::json;
 
 //returns a std::string based on query link and the parameter of the API
-std::vector<std::string> getReqInf(std::string q){
+std::string getReqInf(std::string& q, std::string param){
     httplib::SSLClient cli("openlibrary.org");
-    
-    std::string param[] = {"title", "author_name", "subjects", "editions"};
-    auto path = "/search.json?q=" + q +"&fields=title,author_name,subjects";
+    auto path = "/search.json?q=" + q +"&fields=" + param;
     auto res = cli.Get(path);
-    std::vector<std::string> info;
-    
+    std::string result = "";
     if(res && res->status == 200){
         try{
-            for(auto it : param)
-            {
-                auto j = json::parse(res->body);
-                info.push_back(j[it].get<std::string>());
-            }
-        } catch(const json::parse_error& e){
+            auto j = json::parse(res->body);
+            result = j.get<std::string>();
+        }  catch(const json::parse_error& e){
             std::cerr << "JSON parse error" << e.what() << std::endl;
         }
     }
-    return info;
+    return result;
+}
+
+std::string getTitle(std::string& b){
+    return getReqInf(b, "title");
+}
+
+std::string getAuthor(std::string& b){
+    return getReqInf(b, "author_name");
+}
+
+std::string getCategory(std::string& b){
+    return getReqInf(b, "subjects");
+}
+
+std::string getEdition(std::string& b){
+    return getReqInf(b, "edition");
 }

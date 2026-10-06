@@ -7,8 +7,9 @@
 
 using json = nlohmann::json;
 
+std::vector<std::string> getCatVec(std::vector<std::string>& bookVec);
 json cacheBookAttribute(json& j, Book& b, int ID);
 json cacheCategories(std::string cat, json& jsonArr);
 std::vector<std::string> checkCachedCat(std::string fName);
 void insertCategory(CategoryTrees& categoryTree, std::string cat);
-void insertCachedCategories(CategoryTrees& categoryTree, std::vector<std::string> categories);
+void insertCategories(CategoryTrees& categoryTree, std::vector<std::string> categories);

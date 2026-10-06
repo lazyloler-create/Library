@@ -39,9 +39,10 @@ enable_testing()
 add_executable(library_tests
   Tests/tests.cpp
   src/categories_functions.cpp
-  src/treenode_class.cpp)
+  src/treenode_class.cpp
+  src/getBookInfo.cpp)
 
-target_link_libraries(library_tests PRIVATE GTest::gtest_main)
+target_link_libraries(library_tests PRIVATE GTest::gtest_main httplib::httplib OpenSSL::SSL OpenSSL::Crypto)
 
 include(GoogleTest)
 gtest_discover_tests(library_tests)
