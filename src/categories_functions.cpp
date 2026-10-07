@@ -12,9 +12,10 @@
 
 using json = nlohmann::json;
 
-std::vector<std::string> getCatVec(std::vector<std::string> bookVec){
+//helper function for testing with book vector
+std::vector<std::string> getCatVec(const std::vector<std::string>& bookVec){
     std::vector<std::string> catVec;
-    for(auto it : bookVec){
+    for(const auto& it : bookVec){
         catVec.push_back(getCategory(it));
     }
     return catVec;

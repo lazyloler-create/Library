@@ -2,6 +2,14 @@
 #include <string>
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <iostream>
+#include <ctype.h>
+
+#include "classes/treenode_class.hpp"
+#include "function_headers/categories_functions.hpp"
+#include "function_headers/jsonFile.hpp"
+#include "function_headers/rentBook.hpp"
+#include "function_headers/getBookInfo.hpp"
 
 /*
 Books breakdown (each category has exactly 2 books):
@@ -16,6 +24,7 @@ Books breakdown (each category has exactly 2 books):
 - History: Sapiens: A Brief History of Humankind, Guns, Germs, and Steel
 - Biography: Steve Jobs, Becoming
 */
+
 std::vector<std::string> bookList = {
   "To Kill a Mockingbird",
   "The Great Gatsby",
@@ -42,6 +51,22 @@ std::vector<std::string> bookList = {
 using json = nlohmann::json;
 
 int main(){
-    
-    return 0;
+  //gets categories from the books
+  auto catVec = getCatVec(bookList);
+
+  char c = '\0';
+  std::cout<<"Print category vector? (Y/n) " << std::endl;
+  std::cin>>c;
+
+  if(tolower(c) == 'y' || c == '\n'){
+    for(const auto& it : catVec)
+      std::cout<< it << '\n';
+  }
+
+  CategoryTrees categoryTrees;
+  
+  //creates a tree for each category
+  insertCategories(categoryTrees, catVec);
+
+  return 0;
 }
