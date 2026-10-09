@@ -13,12 +13,23 @@
 using json = nlohmann::json;
 
 //helper function for testing with book vector
-std::vector<std::string> getCatVec(const std::vector<std::string>& bookVec){
-    std::vector<std::string> catVec;
-    for(const auto& it : bookVec){
-        catVec.push_back(getCategory(it));
+std::string** getCatArr(const std::vector<std::string>& bookVec){
+    int rows = bookVec.size();
+    int cols = bookVec.size() * 2; 
+
+    std::string** stringArray = new std::string*[rows];
+
+    for (int i = 0; i < rows; ++i) {
+        stringArray[i] = new std::string[cols];
     }
-    return catVec;
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < cols; j++){
+            stringArray[i][j] = getCategory(bookVec[i]);
+            break;
+        }
+    }
+    return stringArray;
 }
 
 //returns a json with books attributes 
