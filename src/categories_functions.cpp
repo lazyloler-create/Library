@@ -12,25 +12,6 @@
 
 using json = nlohmann::json;
 
-//helper function for testing with book vector
-std::string** getCatArr(const std::vector<std::string>& bookVec){
-    int rows = bookVec.size();
-    int cols = bookVec.size() * 2; 
-
-    std::string** stringArray = new std::string*[rows];
-
-    for (int i = 0; i < rows; ++i) {
-        stringArray[i] = new std::string[cols];
-    }
-
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
-            stringArray[i][j] = getCategory(bookVec[i]);
-            break;
-        }
-    }
-    return stringArray;
-}
 
 //returns a json with books attributes 
 json cacheBookAttribute(json& jsonArr, Book& b, int ID){
@@ -80,22 +61,13 @@ std::vector<std::string> checkCachedCat(std::string fName){
     return categories;
 }
 
-//inserts a category string into a CategoryTree and creates an empty bst,
-//CategoryTree = std::map<std::string, std::unique_ptr<TreeNode>>
-CategoryTrees insertCategory(std::string cat){
-    CategoryTrees categoryTree;
-    categoryTree.insert({cat, nullptr});
-
-    return categoryTree;
-}
-
 //used for inserting a category string into a CategoryTree in loops
-void insertCategory(CategoryTrees& categoryTree, std::string cat){
-    categoryTree.insert({cat, nullptr});
+void insertCategory(CategoryTrees& categoryTree, const std::string& cat){
+    categoryTree.emplace(cat, nullptr);
 }
 
-//inserts a vector of categories made by checkCachedCat(std::string fName, json& j)
-void insertCategories(CategoryTrees& categoryTree, std::vector<std::string> categories){
-    for(int i = 0; i < categories.size(); i++)
-        insertCategory(categoryTree, categories[i]);
+//inserts categories loaded from the cache
+void insertCategories(CategoryTrees& categoryTree, const std::vector<std::string>& categories){
+    for (const auto& category : categories) 
+        insertCategory(categoryTree, category);
 }

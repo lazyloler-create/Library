@@ -3,6 +3,7 @@ project(library_app)
 
 set(CMAKE_CXX_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(cpp-dotenv)
 
 find_package(OpenSSL REQUIRED)
 
@@ -29,3 +30,4 @@ add_executable(library_app
 
 target_compile_definitions(library_app PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
 target_link_libraries(library_app PRIVATE httplib::httplib OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(library_app cpp_dotenv)

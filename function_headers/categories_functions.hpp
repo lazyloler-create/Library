@@ -9,9 +9,13 @@
 
 using json = nlohmann::json;
 
-std::vector<std::string> getCatVec(const std::vector<std::string>& bookVec);
+std::vector<std::vector<std::string>> getCatArr(const std::vector<std::string>& bookVec);
 json cacheBookAttribute(json& j, Book& b, int ID);
 json cacheCategories(std::string cat, json& jsonArr);
 std::vector<std::string> checkCachedCat(std::string fName);
-void insertCategory(CategoryTrees& categoryTree, std::string cat);
-void insertCategories(CategoryTrees& categoryTree, std::vector<std::string> categories);
+void insertCategory(CategoryTrees& categoryTree, const std::string& cat);
+void insertCategories(CategoryTrees& categoryTree, const std::vector<std::string>& categories);
+void insertCategories(
+    CategoryTrees& categoryTree,
+    const std::vector<std::vector<std::string>>& categoriesByBook
+);

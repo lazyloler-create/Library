@@ -9,11 +9,6 @@
 ``
 
 *API:*
-    Open Library API is used
-    To use the API you need to create a json file like this for e.g:
-        ``
-    [
-        {
-            "api_url": "link to open library api"
-        }
-    ]``
+  Google books API is used in this project
+  Get an API from: https://developers.google.com/books/docs/v1/getting_started
+  In the .env file add this: API_KEY = GOOGLE_BOOKS_API_KEY
