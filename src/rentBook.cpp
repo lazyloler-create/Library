@@ -47,11 +47,13 @@ std::string getReturnDate(){
 //gets title, author, date and ISBN of a book that is declared with NodeData
 std::vector<std::string> getBookAttributes(const Book& b){
     std::vector<std::string> result;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 5; i++){
             result.push_back(b.getTitle());
             result.push_back(b.getAuthor());
-            result.push_back(b.getDate());
             result.push_back(b.getISBN());
+            result.push_back(std::to_string(b.getRating()));
+            result.push_back(std::to_string(b.getPrice()));
+            result.push_back(b.getPublishedDate());
         }
     return result;
 }
@@ -66,7 +68,10 @@ void cacheRentedBook(json& j, Book book){
     auto const bookAtt = getBookAttributes(book);
 
     j["Rented books: "] = { 
-        {bookAtt[0], bookAtt[1], bookAtt[2], bookAtt[3], localDate(), getReturnDate()},
+        {bookAtt[0], bookAtt[1], 
+         bookAtt[2], bookAtt[3],
+         bookAtt[4], bookAtt[5]},
+        {localDate(), getReturnDate()},
     };    
 }
 

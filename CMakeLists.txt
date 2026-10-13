@@ -2,17 +2,16 @@ cmake_minimum_required(VERSION 3.14)
 project(library_app)
 
 set(CMAKE_CXX_STANDARD 17)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
 add_subdirectory(cpp-dotenv)
 
 find_package(OpenSSL REQUIRED)
 
-# Add the missing source file that exists in the project.
-
 include(FetchContent)
 FetchContent_Declare(
   cpp-httplib
-  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+  GIT_REPOSITORY git@github.com:yhirose/cpp-httplib.git
   GIT_TAG v0.18.5
 )
 
@@ -28,6 +27,8 @@ add_executable(library_app
     src/file_functions.cpp
 )
 
+
+target_include_directories(library_app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/cpp-dotenv/include)
+
 target_compile_definitions(library_app PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
-target_link_libraries(library_app PRIVATE httplib::httplib OpenSSL::SSL OpenSSL::Crypto)
-target_link_libraries(library_app cpp_dotenv)
+target_link_libraries(library_app PRIVATE httplib::httplib OpenSSL::SSL OpenSSL::Crypto cpp_dotenv)

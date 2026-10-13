@@ -22,9 +22,11 @@ json cacheBookAttribute(json& jsonArr, Book& b, int ID){
     json bookJson = nlohmann::json::object();
     bookJson["Title"] = b.getTitle();
     bookJson["Author"] = b.getAuthor();
-    bookJson["Date"] = b.getDate();
-    bookJson["ISBN"] = ID;
-
+    bookJson["ISBN"] = b.getISBN();
+    bookJson["Published Date"] = b.getPublishedDate();
+    bookJson["Rating"] = b.getRating();
+    bookJson["Price"] = b.getPrice();
+    
     jsonArr.push_back(bookJson);
     return jsonArr;
 }

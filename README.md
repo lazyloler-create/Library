@@ -1,12 +1,12 @@
 **(WIP PROJECT)**
 
-*Build and run using CMake:*
-``
-    cmake -B build
-    cmake --build build
-    #cmake --build build -j$(nproc) #for multi core compiling   
-    ./build/myapp   
-``
+**Build and run using CMake:**
+
+```
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --target library_app --parallel
+./build/library_app
+```
 
 *API:*
   Google books API is used in this project
