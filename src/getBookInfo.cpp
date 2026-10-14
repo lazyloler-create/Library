@@ -5,21 +5,38 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "dotenv.h" 
+#include <cstdlib>
+#include <fstream>
+#include "cpp-dotenv/dotenv.h"
 
 using namespace dotenv;
 
 using json = nlohmann::json;
 
 //returns books info in a JSON object, containts books details such as: title, authors, categories
-json getBookInfo(std::string& book){
+
+std::string getApiFromFile(){
     const auto& e = dotenv::env.load_dotenv(".env");
     const std::string apiKey = e["GOOGLE_API_KEY"];
 
     if(apiKey.empty()){
         throw std::runtime_error("\nAPI_KEy failed to load or is missing!\n");
     }
+    return apiKey;
+}
 
+std::string getApiKey(){
+    auto apiKey = getApiKey();
+
+    if(apiKey.empty()){
+        return {};
+    }
+    return apiKey;
+}
+
+json getBookInfo(std::string& book){
+    
+    aut& apiKey = getApiKey();
     httplib::SSLClient client("www.googleapis.com");
     
     auto url = "/books/v1/volumes?q=" + book + "&key=" + apiKey;

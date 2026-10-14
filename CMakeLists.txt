@@ -18,11 +18,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(cpp-httplib)
 
 add_executable(library_app
-    main.cpp
+    src/main.cpp
     src/categories_functions.cpp
     src/treenode_class.cpp
     src/jsonFile.cpp
-    src/rentBook.cpp
     src/getBookInfo.cpp
     src/file_functions.cpp
 )
