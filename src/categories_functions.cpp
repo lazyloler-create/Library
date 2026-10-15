@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <nlohmann/json.hpp>
+#include <memory>
 
 #include "../classes/book_class.hpp"
 #include "../function_headers/jsonFile.hpp"
@@ -11,7 +12,6 @@
 #include "../function_headers/getBookInfo.hpp"
 
 using json = nlohmann::json;
-
 
 //returns a json with books attributes 
 json cacheBookAttribute(json& jsonArr, Book& b, int ID){
