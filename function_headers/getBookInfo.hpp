@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-json getBookInfo(std::string& book);
+nlohmann::json getBookInfo(std::string& book);
+std::string getApiFromFile();
 std::string getTitle(std::string& book);
 std::string getAuthors(std::string book);
 std::string getPublishedDate(std::string book);

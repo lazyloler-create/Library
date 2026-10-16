@@ -7,7 +7,7 @@
 #include <vector>
 #include <cstdlib>
 #include <fstream>
-#include "cpp-dotenv/dotenv.h"
+#include "dotenv.h"
 
 using namespace dotenv;
 
@@ -26,8 +26,8 @@ std::string getApiFromFile(){
 }
 
 std::string getApiKey(){
-    auto apiKey = getApiKey();
-
+    const auto& e = dotenv::env.load_dotenv(".env");
+    const std::string apiKey = e["GOOGLE_API_KEY"];
     if(apiKey.empty()){
         return {};
     }
@@ -35,17 +35,17 @@ std::string getApiKey(){
 }
 
 json getBookInfo(std::string& book){
-    
-    aut& apiKey = getApiKey();
+
+    const auto& apiKey = getApiKey();
     httplib::SSLClient client("www.googleapis.com");
-    
+
     auto url = "/books/v1/volumes?q=" + book + "&key=" + apiKey;
     const auto response = client.Get(url);
 
     if(response->status != 200){
         throw std::runtime_error("Google books returned HTTP status" + std::to_string(response->status));
     }
-    
+
     const auto& data = json::parse(response->body);
 
     if(!data.contains("items") || !data["items"].is_array()){
@@ -65,7 +65,7 @@ std::string getTitle(std::string& book){
     } else{
         return {};
     }
-    
+
     return title;
 }
 
@@ -83,7 +83,7 @@ std::string getAuthors(std::string book){
     for(const auto& author : authors){
         val = author + "&";
     }
-    
+
     if(!val.empty())
         val.resize(val.size() - 1);
 
@@ -93,8 +93,7 @@ std::string getAuthors(std::string book){
 std::string getPublishedDate(std::string book){
     const auto& result = getBookInfo(book);
     std::string date = "";
-
-    if(result.contains("volumeInfo") && result["volumeInfo"].at("publishedDate")){
+    if(result.contains("volumeInfo") && result["volumeInfo"].contains("publishedDate")){
         date = result.at("volumeInfo").at("publishedDate");
     } else{
         return {};
@@ -105,8 +104,7 @@ std::string getPublishedDate(std::string book){
 std::string getISBN_10(std::string book){
     const auto& result = getBookInfo(book);
     std::string ISBN_10 = "";
-
-    if(result.contains("industryIdentifiers") && result["industryIdentifiers"].at("ISBN_10")){
+    if(result.contains("industryIdentifiers") && result["industryIdentifiers"].contains("ISBN_10")){
         ISBN_10 = result.at("industryIdentifiers").at("ISBN_10");
     } else{
         return {};
@@ -117,8 +115,7 @@ std::string getISBN_10(std::string book){
 std::string getISBN_13(std::string book){
     const auto& result = getBookInfo(book);
     std::string ISBN_13 = "";
-
-    if(result.contains("industryIdentifiers") && result["industryIdentifiers"].at("ISBN_13")){
+    if(result.contains("industryIdentifiers") && result["industryIdentifiers"].contains("ISBN_13")){
         ISBN_13 = result.at("industryIdentifiers").at("ISBN_13");
     } else{
         return {};
@@ -151,9 +148,8 @@ float getRating(std::string book){
 float getPrice(std::string book){
     const auto& result = getBookInfo(book);
     float price = 0;
-
-    if(result.contains("saleInfo") && result["saleInfo"].contains("listPrice") 
-    && result["saleInfo"]["listPrice"].contains("amount")){
+    if(result.contains("saleInfo") && result["saleInfo"].contains("listPrice")
+        && result["saleInfo"]["listPrice"].contains("amount")){
         price = result.at("saleInfo").at("listPrice").at("amount");
     } else{
         return 0;
