@@ -1,5 +1,7 @@
 # Library
 
+#Further development is going to be in C# because of UI!
+
 Library is a book and ebook discovery app. It is intended to help readers find
 books, compare available formats, and choose how they want to get a book: buy a
 digital copy or order a printed copy.
